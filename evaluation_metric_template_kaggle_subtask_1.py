@@ -11,7 +11,6 @@ Your metric must satisfy the following constraints:
 """
 
 import pandas as pd
-import json
 
 catList = ['WHAT', 'WHEN', 'WHERE', 'WHO', 'WHY', 'HOW']
 
@@ -94,11 +93,12 @@ def eval_dataset(real, predicted, catList):
     #Iterate over the real and predicted dataframes
 
 
+
     for indexI, rowI in predicted.iterrows():
         for indexR, rowR in real.iterrows():
             #Check if the id and the text are the same
             if rowI.Id == rowR.Id:
-                textTag = {'real': json.loads(rowR.Tags.replace("'", '"')), 'predicted': json.loads(rowI.Tags.replace("'", '"'))}
+                textTag = {'real': eval(rowR['Tags']), 'predicted': eval(rowI['Tags'])}
                 df = detect_and_classify_texts(textTag, df)
                 break
 
